@@ -16,7 +16,8 @@ Param (
     [Parameter(Mandatory=$true)]
         [string]$HostPoolName,
     [Parameter(Mandatory=$false)]
-        [string]$Optimize = $true
+        [string]$Optimize
+)
 
 ######################
 #    AVD Variables   #
