@@ -33,6 +33,9 @@ $RegistrationToken = New-AzWvdRegistrationInfo -ResourceGroupName $HostPoolRgNam
     -HostPoolName $HostPoolName `
     -ExpirationTime $((get-date).ToUniversalTime().AddDays(1).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ')) `
     | Select-Object -ExpandProperty Token
+    Add-Content -LiteralPath C:\temp\New-AVDSessionHost.log $HostPoolRgName
+    Add-Content -LiteralPath C:\temp\New-AVDSessionHost.log $HostPoolName
+    Add-Content -LiteralPath C:\temp\New-AVDSessionHost.log $RegistrationToken
 
 ####################################
 #    Test/Create Temp Directory    #
