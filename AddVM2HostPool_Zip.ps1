@@ -27,8 +27,8 @@ $AVDBootURI        = 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/
 $AVDAgentURI       = 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv'
 $AVDAgentInstaller = 'AVD-Agent.msi'
 $AVDBootInstaller  = 'AVD-Bootloader.msi'
-#$HostPoolRgName    = 'ZIP_AVD_HostPools_RG'
-#$HostPoolName      = 'ZIP-AVD-HostPool-01'
+$HostPoolRgName    = 'ZIP_AVD_HostPools_RG'
+$HostPoolName      = 'ZIP-AVD-HostPool-01'
 $RegistrationToken = New-AzWvdRegistrationInfo -ResourceGroupName $HostPoolRgName `
     -HostPoolName $HostPoolName `
     -ExpirationTime $((get-date).ToUniversalTime().AddDays(1).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ')) `
