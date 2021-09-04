@@ -9,7 +9,7 @@ connect-AzAccount
 #>
 
 ##############################
-#    WVD Script Parameters   #
+#    AVD Script Parameters   #
 ##############################
 Param (        
     [Parameter(Mandatory=$true)]
