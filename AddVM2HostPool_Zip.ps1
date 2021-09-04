@@ -1,24 +1,24 @@
 ﻿#########################
-#    Install AZ Module  #
+#    Install AZ Module  # Use when running the script stand-alone, i.e. when not called from an ARM template #
 #########################
-#Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -force
-#Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
-#Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
-#Install-Module -Name Az -AllowClobber -Scope CurrentUser -Repository PSGallery 
-#connect-AzAccount
+<#Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser -force
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force
+Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+Install-Module -Name Az -AllowClobber -Scope CurrentUser -Repository PSGallery 
+connect-AzAccount
+#>
 
 ##############################
 #    WVD Script Parameters   #
 ##############################
 Param (        
     [Parameter(Mandatory=$true)]
-        [string]$HostPoolRgName,
-    [Parameter(Mandatory=$true)]
-        [string]$HostPoolName,
+        [string]$RegistrationToken,
     [Parameter(Mandatory=$false)]
         [string]$Optimize
 )
-
+Add-Content -LiteralPath C:\New-AVDSessionHost.log $RegistrationToken
+Add-Content -LiteralPath C:\New-AVDSessionHost.log ""
 ######################
 #    AVD Variables   #
 ######################
@@ -27,15 +27,18 @@ $AVDBootURI        = 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/
 $AVDAgentURI       = 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv'
 $AVDAgentInstaller = 'AVD-Agent.msi'
 $AVDBootInstaller  = 'AVD-Bootloader.msi'
+
+<#
+######################################
+#  Get Host Pool Registration Token  # Use this section when running the script stand-alone to automaticlly create the host pool token #
+######################################
 $HostPoolRgName    = 'ZIP_AVD_HostPools_RG'
 $HostPoolName      = 'ZIP-AVD-HostPool-01'
 $RegistrationToken = New-AzWvdRegistrationInfo -ResourceGroupName $HostPoolRgName `
     -HostPoolName $HostPoolName `
     -ExpirationTime $((get-date).ToUniversalTime().AddDays(1).ToString('yyyy-MM-ddTHH:mm:ss.fffffffZ')) `
     | Select-Object -ExpandProperty Token
-    Add-Content -LiteralPath C:\temp\New-AVDSessionHost.log $HostPoolRgName
-    Add-Content -LiteralPath C:\temp\New-AVDSessionHost.log $HostPoolName
-    Add-Content -LiteralPath C:\temp\New-AVDSessionHost.log $RegistrationToken
+#>
 
 ####################################
 #    Test/Create Temp Directory    #
