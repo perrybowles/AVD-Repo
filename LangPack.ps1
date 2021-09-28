@@ -32,10 +32,13 @@ Set-WinHomeLocation -GeoId 242
 Set-WinDefaultInputMethodOverride -InputTip "0809:00000809"
 
 #Copy current user region settings to system & default users + Welcome screen
-& $env:SystemRoot\System32\control.exe "intl.cpl,,/f:`"D:\Scripts\en-GB\CopyRegion.xml`""
+& $env:SystemRoot\System32\control.exe "intl.cpl,,/f:`"F:\Scripts\en-GB\CopyRegion.xml`""
 
 #Set the execution policy to default for current user
 Set-ExecutionPolicy -ExecutionPolicy default -scope currentuser -Force
 
+#Delete drive mapping
+net use f: /delete /y
+
 #Reboot immediately
-#shutdown /r /t 0
+shutdown /r /t 0
