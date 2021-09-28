@@ -25,16 +25,15 @@ Add-WindowsPackage -Online -PackagePath $LIPContent\Microsoft-Windows-LanguageFe
 Set-TimeZone "GMT Standard Time"
 
 # Set UK locale, language etc. for current user
+Set-WinHomeLocation -GeoId 242 #sets the "Country or Region" (Location) to UK
+Set-Culture en-GB # sets the "Regional Format" (Format) to UK
 New-WinUserLanguageList -Language en-GB
-Set-WinUILanguageOverride -Language en-GB
-Set-WinDefaultInputMethodOverride -InputTip "0809:00000809"
-Set-WinSystemLocale -SystemLocale en-GB
-Set-WinUserLanguageList -LanguageList en-GB -Force
-Set-WinHomeLocation -GeoId 242
-Set-Culture en-GB
+Set-WinUserLanguageList -LanguageList en-GB -Force #sets "Windows display", "Apps & websites" and "Keyboard" (Input language) to UK
+Set-WinUILanguageOverride -Language en-GB #overrides the "Windows display" (Display language) but not the "Keyboard" (Input language), or "Regional format" (Format) with UK region
+Set-WinSystemLocale -SystemLocale en-GB #sets the System-locale code pages, which include ANSI, DOS, and Macintosh, to UK. Requires admin privelages and a reboot
 
 #Copy current user's region settings to System & Default users + Welcome screen
-Start-Sleep 5
+#Start-Sleep 5
 & $env:SystemRoot\System32\control.exe "intl.cpl,,/f:`"F:\Scripts\en-GB\CopyRegion.xml`""
 
 #Delete drive mapping and D:\LangPack folder
