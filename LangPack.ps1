@@ -44,4 +44,4 @@ remove-item -path d:\LangPack -recurse
 Set-ExecutionPolicy -ExecutionPolicy default -scope currentuser -Force
 
 #Reboot immediately
-shutdown /r /t 0
+#shutdown /r /t 0
