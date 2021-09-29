@@ -161,6 +161,27 @@ else {
     Add-Content -LiteralPath C:\New-WVDSessionHost.log "Optimize NOT selected"    
 }
 
+#######################################
+#  Set the region and timezone again  #
+#######################################
+net use F: \\zipscripts.file.core.windows.net\sw-repo aopmUsV/SF1bnBZXln7wCK//eq2pQLZgIJGeaiJOLHt3nlv6A+FJjIpRkfH7vDZ8ej62t3pZv6iDmD/s6XELeA== /user:localhost\zipscripts /persistent:no
+# Set UK timezone
+Set-TimeZone "GMT Standard Time"
+
+# Set UK locale, language etc. for current user
+Set-WinHomeLocation -GeoId 242 #sets the "Country or Region" (Location) to UK
+Set-Culture en-GB # sets the "Regional Format" (Format) to UK
+New-WinUserLanguageList -Language en-GB
+Set-WinUserLanguageList -LanguageList en-GB -Force #sets "Windows display", "Apps & websites" and "Keyboard" (Input language) to UK
+Set-WinUILanguageOverride -Language en-GB #overrides the "Windows display" (Display language) but not the "Keyboard" (Input language), or "Regional format" (Format) with UK region
+Set-WinSystemLocale -SystemLocale en-GB #sets the System-locale code pages, which include ANSI, DOS, and Macintosh, to UK. Requires admin privelages and a reboot
+
+#Copy current user's region settings to System & Default users + Welcome screen
+#Start-Sleep 5
+& $env:SystemRoot\System32\control.exe "intl.cpl,,/f:`"F:\Scripts\en-GB\CopyRegion.xml`""
+
+#Delete drive mapping and D:\LangPack folder
+net use f: /delete /y
 
 ##########################
 #    Restart Computer    #
