@@ -105,7 +105,7 @@ Set-ExecutionPolicy -ExecutionPolicy default -scope currentuser -Force
 ##########################################
 #    Enable Screen Capture Protection    #
 ##########################################
-Add-Content -LiteralPath C:\New-WVDSessionHost.log "Enable Screen Capture Protection"
+Add-Content -LiteralPath C:\New-AVDSessionHost.log "Enable Screen Capture Protection"
 Push-Location 
 Set-Location "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services"
 New-ItemProperty `
@@ -125,8 +125,8 @@ If ($Optimize -eq $true) {
     ################################
     #    Download WVD Optimizer    #
     ################################
-    Add-Content -LiteralPath C:\New-WVDSessionHost.log "Optimize Selected"
-    Add-Content -LiteralPath C:\New-WVDSessionHost.log "Creating C:\Optimize folder"
+    Add-Content -LiteralPath C:\New-AVDSessionHost.log "Optimize Selected"
+    Add-Content -LiteralPath C:\New-AVDSessionHost.log "Creating C:\Optimize folder"
     New-Item -Path C:\ -Name Optimize -ItemType Directory -ErrorAction SilentlyContinue
     $LocalPath = "C:\Optimize\"
     $AVDOptimizeURL = 'https://github.com/The-Virtual-Desktop-Team/Virtual-Desktop-Optimization-Tool/archive/refs/heads/main.zip'
@@ -137,9 +137,9 @@ If ($Optimize -eq $true) {
 
 
     ###############################
-    #    Prep for WVD Optimize    #
+    #    Prep for AVD Optimize    #
     ###############################
-    Add-Content -LiteralPath C:\New-WVDSessionHost.log "Optimize downloaded and extracted"
+    Add-Content -LiteralPath C:\New-AVDSessionHost.log "Optimize downloaded and extracted"
     Expand-Archive `
         -LiteralPath "C:\Optimize\Windows_10_VDI_Optimize-master.zip" `
         -DestinationPath "$Localpath" `
@@ -149,16 +149,16 @@ If ($Optimize -eq $true) {
 
 
     #################################
-    #    Run WVD Optimize Script    #
+    #    Run AVD Optimize Script    #
     #################################
-    Add-Content -LiteralPath C:\New-WVDSessionHost.log "Begining Optimize"
+    Add-Content -LiteralPath C:\New-AVDSessionHost.log "Begining Optimize"
     Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force -Verbose
     .\Win10_VirtualDesktop_Optimize.ps1 -Optimizations $Optimizations -Restart -AcceptEULA -Verbose
-    Add-Content -LiteralPath C:\New-WVDSessionHost.log "Optimization Complete"
+    Add-Content -LiteralPath C:\New-AVDSessionHost.log "Optimization Complete"
 }
 else {
     Write-Output "Optimize not selected"
-    Add-Content -LiteralPath C:\New-WVDSessionHost.log "Optimize NOT selected"    
+    Add-Content -LiteralPath C:\New-AVDSessionHost.log "Optimize NOT selected"    
 }
 
 #######################################
@@ -186,5 +186,5 @@ net use f: /delete /y
 ##########################
 #    Restart Computer    #
 ##########################
-Add-Content -LiteralPath C:\New-WVDSessionHost.log "Process Complete - REBOOT"
-Restart-Computer -Force 
+Add-Content -LiteralPath C:\New-AVDSessionHost.log "Process Complete - REBOOT"
+Shutdown /r /t 0
