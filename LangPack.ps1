@@ -3,7 +3,7 @@
 ####################################################################
 
 # copy language files to "D:\LangPack" folder (temp drive)
-net use F: \\zipscripts.file.core.windows.net\sw-repo aopmUsV/SF1bnBZXln7wCK//eq2pQLZgIJGeaiJOLHt3nlv6A+FJjIpRkfH7vDZ8ej62t3pZv6iDmD/s6XELeA== /user:localhost\zipscripts /persistent:no
+net use G: \\zipscripts.file.core.windows.net\sw-repo aopmUsV/SF1bnBZXln7wCK//eq2pQLZgIJGeaiJOLHt3nlv6A+FJjIpRkfH7vDZ8ej62t3pZv6iDmD/s6XELeA== /user:localhost\zipscripts /persistent:no
 copy-item -path G:\LangPack\ -destination D:\ -recurse
 
 # Disable Language Pack cleanup
@@ -11,7 +11,6 @@ Disable-ScheduledTask -TaskPath "\Microsoft\Windows\AppxDeploymentClient\" -Task
 
 # Set Language Pack Content Stores
 [string]$LIPContent = "D:\LangPack"
-
 # Add English (United Kingdom) language packs and features
 Add-AppProvisionedPackage -Online -PackagePath $LIPContent\en-gb\LanguageExperiencePack.en-gb.Neutral.appx -LicensePath $LIPContent\en-gb\License.xml
 Add-WindowsPackage -Online -PackagePath $LIPContent\Microsoft-Windows-Client-Language-Pack_x64_en-gb.cab
@@ -37,7 +36,7 @@ Set-WinSystemLocale -SystemLocale en-GB #sets the System-locale code pages, whic
 & $env:SystemRoot\System32\control.exe "intl.cpl,,/f:`"G:\Scripts\en-GB\CopyRegion.xml`""
 
 #Delete drive mapping and D:\LangPack folder
-#net use f: /delete /y
+#net use G: /delete /y
 remove-item -path d:\LangPack -recurse
 
 #Set the execution policy to default for current user
