@@ -164,7 +164,7 @@ else {
 #######################################
 #  Set the region and timezone again  #
 #######################################
-net use F: \\zipscripts.file.core.windows.net\sw-repo aopmUsV/SF1bnBZXln7wCK//eq2pQLZgIJGeaiJOLHt3nlv6A+FJjIpRkfH7vDZ8ej62t3pZv6iDmD/s6XELeA== /user:localhost\zipscripts /persistent:no
+net use G: \\zipscripts.file.core.windows.net\sw-repo aopmUsV/SF1bnBZXln7wCK//eq2pQLZgIJGeaiJOLHt3nlv6A+FJjIpRkfH7vDZ8ej62t3pZv6iDmD/s6XELeA== /user:localhost\zipscripts /persistent:no
 # Set UK timezone
 Set-TimeZone "GMT Standard Time"
 
@@ -178,10 +178,10 @@ Set-WinSystemLocale -SystemLocale en-GB #sets the System-locale code pages, whic
 
 #Copy current user's region settings to System & Default users + Welcome screen
 #Start-Sleep 5
-& $env:SystemRoot\System32\control.exe "intl.cpl,,/f:`"F:\Scripts\en-GB\CopyRegion.xml`""
+& $env:SystemRoot\System32\control.exe "intl.cpl,,/G:`"G:\Scripts\en-GB\CopyRegion.xml`""
 
 #Delete drive mapping and D:\LangPack folder
-net use f: /delete /y
+net use G: /delete /y
 
 ##########################
 #    Restart Computer    #
