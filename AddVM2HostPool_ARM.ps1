@@ -1,4 +1,5 @@
-﻿## Use this version when calling from an ARM Template . Use the version AddVM2HostPool.ps1 as a standalone script ##
+﻿## Use this version when calling from an ARM Template ##
+## Use the version AddVM2HostPool.ps1 as a standalone script run from the VM ##
 
 ##############################
 #    AVD Script Parameters   #
@@ -121,9 +122,15 @@ Pop-Location
 #    AVD Optimizer (Virtual Desktop Team)    #
 ##############################################
 If ($Optimize -eq $true) {  
-    Write-Output "Optimizer selected"  
+    Write-Output "Optimizer selected"
+    [Cmdletbinding()]
+Param (
+    [ValidateSet('All','WindowsMediaPlayer','AppxPackages','ScheduledTasks','DefaultUserSettings','Autologgers','Services','NetworkOptimizations','LGPO','DiskCleanup')] 
+    [String[]]
+    $Optimizations = "All"
+)
     ################################
-    #    Download WVD Optimizer    #
+    #    Download AVD Optimizer    #
     ################################
     Add-Content -LiteralPath C:\New-AVDSessionHost.log "Optimize Selected"
     Add-Content -LiteralPath C:\New-AVDSessionHost.log "Creating C:\Optimize folder"
@@ -146,8 +153,6 @@ If ($Optimize -eq $true) {
         -Force `
         -Verbose
 
-
-
     #################################
     #    Run AVD Optimize Script    #
     #################################
@@ -160,31 +165,34 @@ else {
     Write-Output "Optimize not selected"
     Add-Content -LiteralPath C:\New-AVDSessionHost.log "Optimize NOT selected"    
 }
+    #Add the local "Administrators" group to the local "FSLogix Profile Exclude List" group
+    Add-LocalGroupMember -Group "FSLogix Profile Exclude List" -Member "Administrators"
 
 #######################################
 #  Set the region and timezone again  #
 #######################################
-net use G: \\zipscripts.file.core.windows.net\sw-repo aopmUsV/SF1bnBZXln7wCK//eq2pQLZgIJGeaiJOLHt3nlv6A+FJjIpRkfH7vDZ8ej62t3pZv6iDmD/s6XELeA== /user:localhost\zipscripts /persistent:no
-# Set UK timezone
-Set-TimeZone "GMT Standard Time"
+    net use Z: \\zipscripts.file.core.windows.net\sw-repo aopmUsV/SF1bnBZXln7wCK//eq2pQLZgIJGeaiJOLHt3nlv6A+FJjIpRkfH7vDZ8ej62t3pZv6iDmD/s6XELeA== /user:localhost\zipscripts /persistent:no
+    # Set UK timezone
+    Set-TimeZone "GMT Standard Time"
 
-# Set UK locale, language etc. for current user
-Set-WinHomeLocation -GeoId 242 #sets the "Country or Region" (Location) to UK
-Set-Culture en-GB # sets the "Regional Format" (Format) to UK
-New-WinUserLanguageList -Language en-GB
-Set-WinUserLanguageList -LanguageList en-GB -Force #sets "Windows display", "Apps & websites" and "Keyboard" (Input language) to UK
-Set-WinUILanguageOverride -Language en-GB #overrides the "Windows display" (Display language) but not the "Keyboard" (Input language), or "Regional format" (Format) with UK region
-Set-WinSystemLocale -SystemLocale en-GB #sets the System-locale code pages, which include ANSI, DOS, and Macintosh, to UK. Requires admin privelages and a reboot
+    # Set UK locale, language etc. for current user
+    Set-WinHomeLocation -GeoId 242 #sets the "Country or Region" (Location) to UK
+    Set-Culture en-GB # sets the "Regional Format" (Format) to UK
+    New-WinUserLanguageList -Language en-GB
+    Set-WinUserLanguageList -LanguageList en-GB -Force #sets "Windows display", "Apps & websites" and "Keyboard" (Input language) to UK
+    Set-WinUILanguageOverride -Language en-GB #overrides the "Windows display" (Display language) but not the "Keyboard" (Input language), or "Regional format" (Format) with UK region
+    Set-WinSystemLocale -SystemLocale en-GB #sets the System-locale code pages, which include ANSI, DOS, and Macintosh, to UK. Requires admin privelages and a reboot
 
-#Copy current user's region settings to System & Default users + Welcome screen
-#Start-Sleep 5
-& $env:SystemRoot\System32\control.exe "intl.cpl,,/G:`"G:\Scripts\en-GB\CopyRegion.xml`""
+    #Copy current user's region settings to System & Default users + Welcome screen
+    #Start-Sleep 5
+    & $env:SystemRoot\System32\control.exe "intl.cpl,,/f:`"Z:\Scripts\en-GB\CopyRegion.xml`""
 
-#Delete drive mapping and D:\LangPack folder
-net use G: /delete /y
+    #Delete drive mapping and D:\LangPack folder
+    net use Z: /delete /y
+    remove-item -path d:\LangPack -recurse
 
 ##########################
 #    Restart Computer    #
 ##########################
-Add-Content -LiteralPath C:\New-AVDSessionHost.log "Process Complete - REBOOT"
-Shutdown /r /t 0
+    Add-Content -LiteralPath C:\New-AVDSessionHost.log "Process Complete - REBOOT"
+    Shutdown /r /t 0
