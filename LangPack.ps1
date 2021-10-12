@@ -3,8 +3,8 @@
 ####################################################################
 
 # copy language files to "D:\LangPack" folder (temp drive)
-net use G: \\zipscripts.file.core.windows.net\sw-repo aopmUsV/SF1bnBZXln7wCK//eq2pQLZgIJGeaiJOLHt3nlv6A+FJjIpRkfH7vDZ8ej62t3pZv6iDmD/s6XELeA== /user:localhost\zipscripts /persistent:no
-copy-item -path G:\LangPack\ -destination D:\ -recurse
+net use Z: \\zipscripts.file.core.windows.net\sw-repo aopmUsV/SF1bnBZXln7wCK//eq2pQLZgIJGeaiJOLHt3nlv6A+FJjIpRkfH7vDZ8ej62t3pZv6iDmD/s6XELeA== /user:localhost\zipscripts /persistent:no
+copy-item -path Z:\LangPack\ -destination D:\ -recurse
 
 # Disable Language Pack cleanup
 Disable-ScheduledTask -TaskPath "\Microsoft\Windows\AppxDeploymentClient\" -TaskName "Pre-staged app cleanup"
@@ -33,14 +33,17 @@ Set-WinSystemLocale -SystemLocale en-GB #sets the System-locale code pages, whic
 
 #Copy current user's region settings to System & Default users + Welcome screen
 #Start-Sleep 5
-& $env:SystemRoot\System32\control.exe "intl.cpl,,/f:`"G:\Scripts\en-GB\CopyRegion.xml`""
+& $env:SystemRoot\System32\control.exe "intl.cpl,,/f:`"Z:\Scripts\en-GB\CopyRegion.xml`""
 
 #Delete drive mapping and D:\LangPack folder
-#net use G: /delete /y
-remove-item -path d:\LangPack -recurse
+#net use Z: /delete /y
+#remove-item -path d:\LangPack -recurse
 
 #Set the execution policy to default for current user
 Set-ExecutionPolicy -ExecutionPolicy default -scope currentuser -Force
+
+#Add the local "Administrators" group to the local "FSLogix Profile Exclude List" group
+Add-LocalGroupMember -Group "FSLogix Profile Exclude List" -Member "Administrators"
 
 #Reboot immediately
 shutdown /r /t 0
